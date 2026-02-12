@@ -105,122 +105,21 @@ The table below shows the performance of all six models across six evaluation me
 
 ## 🔍 Observations on Model Performance
 
-### 1. Logistic Regression
-**Performance:** Strong baseline performance with 80.98% accuracy and 0.9298 AUC score.
-
-**Observations:**
-- Demonstrates solid performance as a linear classifier
-- Achieves good balance between precision (0.7619) and recall (0.9143)
-- Exceptional recall (91.43%) is valuable in medical diagnosis, minimizing false negatives
-- High AUC of 0.9298 indicates excellent discrimination ability
-- F1 score of 0.8312 shows good overall balance
-- MCC of 0.6309 indicates substantial correlation with actual outcomes
-- Computationally efficient and interpretable, suitable for clinical settings
-- Well-suited for this dataset with linear decision boundaries
-
-**Clinical Significance:** High recall minimizes risk of missing actual heart disease cases.
+| ML Model Name | Observation about model performance |
+|:--------------|:------------------------------------|
+| **Logistic Regression** | Strong baseline performance with 80.98% accuracy and excellent recall (91.43%), making it valuable for medical diagnosis to minimize false negatives. High AUC of 0.9298 indicates excellent discrimination ability. Computationally efficient and interpretable, well-suited for clinical settings with linear decision boundaries. |
+| **Decision Tree** | Achieves 87.32% accuracy with interpretable tree structure. Excellent balance between precision (0.8624) and recall (0.8952). MCC score of 0.7465 is second-best among all models. Maximum depth limitation (max_depth=5) effectively prevents overfitting while maintaining strong performance. Provides clear decision rules for medical practitioners. |
+| **kNN** | Very strong performance with 86.34% accuracy and highest AUC (0.9629) among non-ensemble models. Excellent precision (0.8738) minimizes false positives while good recall (0.8571) ensures disease detection. Distance-based approach benefits from feature scaling. Instance-based learning effectively captures local patterns in the data. |
+| **Naive Bayes** | Good performance with 82.93% accuracy despite naive independence assumption. Strong recall (0.8762) ensures good disease detection. Very fast training and prediction times make it suitable for real-time applications. Probabilistic nature provides confidence scores and robust performance against irrelevant features. |
+| **Random Forest (Ensemble)** | Achieves perfect scores (1.0000) across all six metrics, combining predictions from 100 decision trees. Perfect performance suggests possible overfitting or memorization of test patterns. Provides feature importance rankings for interpretability and handles non-linear relationships excellently. Cross-validation recommended for production deployment. |
+| **XGBoost (Ensemble)** | Perfect performance (1.0000) across all metrics using advanced gradient boosting. State-of-the-art algorithm optimized for structured data with built-in regularization and feature importance. Perfect scores may indicate overfitting or data leakage. Handles missing values and feature interactions automatically. Recommend validation on larger independent test set. |
 
 ---
 
-### 2. Decision Tree
-**Performance:** Strong performance with 87.32% accuracy, significantly better than simple linear models.
-
-**Observations:**
-- Achieves 87.32% accuracy with interpretable tree structure
-- Excellent AUC score (0.9326) shows good ranking ability
-- High precision (0.8624) and recall (0.8952) indicate balanced performance
-- MCC score of 0.7465 is the second-best among all models
-- Tree structure provides clear decision rules for clinicians
-- Maximum depth limitation (max_depth=5) prevents overfitting effectively
-- Good balance between model complexity and performance
-
-**Advantage:** Provides interpretable decision paths for medical practitioners.
-
----
-
-### 3. K-Nearest Neighbors (kNN)
-**Performance:** Very strong performance with 86.34% accuracy and highest AUC among non-ensemble models.
-
-**Observations:**
-- Achieves impressive AUC of 0.9629, best among traditional models
-- Excellent precision (0.8738) minimizes false positives
-- Good recall (0.8571) ensures most disease cases are detected
-- Distance-based approach benefits significantly from feature scaling
-- Performance with k=5 neighbors is well-optimized for this dataset
-- MCC of 0.7269 indicates strong correlation with actual outcomes
-- Instance-based learning captures local patterns effectively
-
-**Trade-off:** Higher computational cost during prediction but excellent performance.
-
----
-
-### 4. Naive Bayes
-**Performance:** Good performance with 82.93% accuracy and solid generalization.
-
-**Observations:**
-- Achieves 82.93% accuracy despite naive independence assumption
-- Strong recall (0.8762) ensures good disease detection
-- AUC of 0.9043 shows good discrimination ability
-- Very fast training and prediction times
-- Probabilistic nature provides confidence scores for predictions
-- MCC of 0.6602 indicates moderate-to-strong correlation
-- Robust to irrelevant features due to probabilistic framework
-
-**Strength:** Excellent balance between speed and performance for real-time applications.
-
----
-
-### 5. Random Forest (Ensemble)
-**Performance:** **Perfect performance** with 100% accuracy across all metrics - likely overfitting on test set.
-
-**Observations:**
-- Achieves perfect scores (1.0000) across all six metrics
-- Perfect accuracy, precision, recall, F1, and MCC scores
-- Combines predictions from 100 decision trees
-- The perfect performance suggests possible overfitting or memorization
-- Provides feature importance rankings for interpretability
-- Handles non-linear relationships and feature interactions excellently
-- Robust ensemble method that reduces variance
-
-**Caution:** Perfect scores may indicate overfitting. Cross-validation recommended for production deployment.
-
-**Advantage:** Provides feature importance scores identifying critical health indicators.
-
----
-
-### 6. XGBoost (Ensemble)
-**Performance:** **Perfect performance** with 100% accuracy across all metrics - likely overfitting on test set.
-
-**Observations:**
-- Achieves perfect scores (1.0000) across all six metrics
-- Advanced gradient boosting with regularization
-- Perfect classification on the test set
-- Handles missing values and feature interactions automatically
-- Provides built-in feature importance for interpretability
-- The perfect performance suggests possible overfitting or data leakage
-- State-of-the-art algorithm optimized for structured data
-
-**Caution:** Perfect scores warrant investigation. Recommend cross-validation and larger test set.
-
-**Insight:** Both ensemble models (Random Forest and XGBoost) achieving perfect scores suggests they may have memorized the test set patterns, indicating potential overfitting.
-
----
-
-## 🏆 Overall Model Ranking
-
-Based on the comprehensive evaluation:
-
-1. **🥇 Random Forest & XGBoost (Tie)** - Perfect performance (1.0000 across all metrics) - but caution for overfitting
-2. **🥈 Decision Tree** - Excellent balanced performance (Accuracy: 0.8732, MCC: 0.7465)
-3. **🥉 kNN** - Very strong performance (Accuracy: 0.8634, AUC: 0.9629)
-4. **Naive Bayes** - Good performance (Accuracy: 0.8293)
-5. **Logistic Regression** - Solid baseline (Accuracy: 0.8098, excellent recall: 0.9143)
-
----
-
-## 🚀 Deployment & Usage
+## 🚀 Deployment, Features & Usage
 
 ### Interactive Web Application
+**🌐 Live App:** https://heart-disease-classification-grccj2+kwgxnozf2tqm36cq.streamlit.app
 
 The project includes an interactive Streamlit web application with the following features:
 
@@ -241,15 +140,6 @@ pip install -r requirements.txt
 # Run the Streamlit app
 streamlit run app.py
 ```
-
-### Deployment to Streamlit Cloud
-
-1. Push code to GitHub repository
-2. Visit [share.streamlit.io](https://share.streamlit.io/)
-3. Connect your GitHub repository
-4. Select `app.py` as the main file
-5. Deploy!
-
 ---
 
 ## 📁 Project Structure
@@ -286,22 +176,12 @@ heart-disease-classification/
 
 ---
 
-## 📝 Assignment Details
-
-- **Course:** Machine Learning - M.Tech (AIML)
-- **Institution:** BITS Pilani
-- **Assignment:** Assignment 2
-- **Total Marks:** 15
-- **Submission Deadline:** 15-Feb-2026
-
----
-
 ## 👨‍💻 Author
 
-**Student Name:** Deepti Yashwant Walde
-**Student ID:** 2025AA05185
-**Program:** Machine Learning - M.Tech (AIML)
-**Institution:** BITS Pilani
+- **Student Name:** Deepti Yashwant Walde
+- **Student ID:** 2025AA05185
+- **Program:** Machine Learning - M.Tech (AIML)
+- **Institution:** BITS Pilani
 
 ---
 
