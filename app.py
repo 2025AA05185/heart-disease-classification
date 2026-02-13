@@ -37,35 +37,61 @@ st.set_page_config(
 # Custom CSS
 st.markdown("""
     <style>
+    /* Main header styling */
     .main-header {
-        font-size: 42px;
-        font-weight: bold;
+        font-size: 72px;
+        font-weight: 700;
         color: #FF4B4B;
         text-align: center;
-        padding: 20px;
+        padding: 20px 0;
+        margin: 0;
+        line-height: 1.2;
     }
+
+    /* Sub header styling */
     .sub-header {
-        font-size: 24px;
+        font-size: 32px;
         font-weight: bold;
         color: #0068C9;
         padding: 10px 0;
     }
+
+    /* Metric box styling */
     .metric-box {
         background-color: #f0f2f6;
         padding: 20px;
         border-radius: 10px;
         margin: 10px 0;
     }
+
+    /* Smooth button hover effect */
+    .stButton>button {
+        transition: all 0.3s ease;
+    }
+
+    .stButton>button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Download button hover effect */
+    .stDownloadButton>button {
+        transition: all 0.3s ease;
+    }
+
+    .stDownloadButton>button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
     </style>
     """, unsafe_allow_html=True)
 
 # Title
-st.markdown('<p class="main-header">❤️ Heart Disease Prediction System</p>', unsafe_allow_html=True)
-st.markdown("### ML Assignment 2 - Classification Model Comparison")
+st.markdown('<h1 style="font-size: 30 px; font-weight: 600; color: #FF4B4B; text-align: center; padding: 5px 0; margin: 0; line-height: 1.2;">❤️ Heart Disease Prediction System</h1>', unsafe_allow_html=True)
+st.markdown("### Classification Model Comparison")
 
 # Sidebar
 st.sidebar.title("⚙️ Configuration")
-st.sidebar.markdown("---")
 
 # ====================================
 # FEATURE 1: DATASET UPLOAD
@@ -96,7 +122,15 @@ selected_model_name = st.sidebar.selectbox(
     list(model_options.keys())
 )
 
-st.sidebar.markdown("---")
+# Sidebar Footer with student details
+st.sidebar.markdown("<br>" * 3, unsafe_allow_html=True)
+st.sidebar.markdown("""
+<div style='position: fixed; bottom: 20px; left: 20px; width: 300px; font-size: 15px; color: #b0b0b0; line-height: 1.6;'>
+    <p style='margin: 0; font-weight: bold; color: #e0e0e0;'>Student:</p>
+    <p style='margin: 0;'>Deepti Yashwant Walde</p>
+    <p style='margin: 0;'>ID: 2025AA05185</p>
+</div>
+""", unsafe_allow_html=True)
 
 # Load training data info
 @st.cache_data
@@ -194,7 +228,7 @@ if uploaded_file is not None:
 
                 # Display predictions
                 st.markdown("---")
-                st.markdown('<p class="sub-header">🎯 Prediction Results</p>', unsafe_allow_html=True)
+                st.markdown('<h2 style="font-size: 32px; font-weight: bold; color: #0068C9; padding: 10px 0;">🎯 Prediction Results</h2>', unsafe_allow_html=True)
 
                 # Prediction distribution
                 pred_df = pd.DataFrame({
@@ -222,7 +256,7 @@ if uploaded_file is not None:
                 # ====================================
                 if has_target and y_test is not None:
                     st.markdown("---")
-                    st.markdown('<p class="sub-header">📊 Model Performance Metrics</p>', unsafe_allow_html=True)
+                    st.markdown('<h2 style="font-size: 32px; font-weight: bold; color: #0068C9; padding: 10px 0;">📊 Model Performance Metrics</h2>', unsafe_allow_html=True)
 
                     # Calculate metrics
                     accuracy = accuracy_score(y_test, y_pred)
@@ -251,8 +285,36 @@ if uploaded_file is not None:
                     # FEATURE 4: CONFUSION MATRIX & CLASSIFICATION REPORT
                     # ====================================
                     st.markdown("---")
-                    st.markdown('<p class="sub-header">📉 Detailed Analysis</p>', unsafe_allow_html=True)
+                    st.markdown('<h2 style="font-size: 32px; font-weight: bold; color: #0068C9; padding: 10px 0;">📉 Detailed Analysis</h2>', unsafe_allow_html=True)
 
+                    # Model Insights - Show first at the top
+                    st.markdown("### 💡 Model Insights")
+
+                    col_insight1, col_insight2 = st.columns(2)
+
+                    with col_insight1:
+                        if accuracy >= 0.8:
+                            st.success(f"✅ Excellent performance! Accuracy: {accuracy:.2%}")
+                        elif accuracy >= 0.7:
+                            st.info(f"✓ Good performance. Accuracy: {accuracy:.2%}")
+                        else:
+                            st.warning(f"⚠️ Room for improvement. Accuracy: {accuracy:.2%}")
+
+                    with col_insight2:
+                        # Best metric
+                        metrics_dict = {
+                            'Accuracy': accuracy,
+                            'AUC': auc,
+                            'Precision': precision,
+                            'Recall': recall,
+                            'F1': f1
+                        }
+                        best_metric = max(metrics_dict, key=metrics_dict.get)
+                        st.info(f"🏆 Best Metric: {best_metric} ({metrics_dict[best_metric]:.4f})")
+
+                    st.markdown("<br>", unsafe_allow_html=True)
+
+                    # Confusion Matrix and Classification Report in columns
                     col1, col2 = st.columns(2)
 
                     with col1:
@@ -270,14 +332,15 @@ if uploaded_file is not None:
                         ax.set_title(f'Confusion Matrix - {selected_model_name}')
                         st.pyplot(fig)
 
-                        # Show confusion matrix values
-                        st.markdown(f"""
-                        **Confusion Matrix Breakdown:**
-                        - True Negatives (TN): {cm[0,0]}
-                        - False Positives (FP): {cm[0,1]}
-                        - False Negatives (FN): {cm[1,0]}
-                        - True Positives (TP): {cm[1,1]}
-                        """)
+                        # Show confusion matrix values in a cleaner format
+                        st.markdown("**Confusion Matrix Breakdown:**")
+                        breakdown_col1, breakdown_col2 = st.columns(2)
+                        with breakdown_col1:
+                            st.metric("True Negatives (TN)", cm[0,0])
+                            st.metric("False Negatives (FN)", cm[1,0])
+                        with breakdown_col2:
+                            st.metric("False Positives (FP)", cm[0,1])
+                            st.metric("True Positives (TP)", cm[1,1])
 
                     with col2:
                         # Classification Report
@@ -286,29 +349,7 @@ if uploaded_file is not None:
                                                       target_names=['No Disease', 'Disease'],
                                                       output_dict=True)
                         report_df = pd.DataFrame(report).transpose()
-                        st.dataframe(report_df.style.format("{:.4f}"))
-
-                        # Additional insights
-                        st.markdown("---")
-                        st.markdown("#### 💡 Model Insights")
-
-                        if accuracy >= 0.8:
-                            st.success(f"✅ Excellent performance! Accuracy: {accuracy:.2%}")
-                        elif accuracy >= 0.7:
-                            st.info(f"✓ Good performance. Accuracy: {accuracy:.2%}")
-                        else:
-                            st.warning(f"⚠️ Room for improvement. Accuracy: {accuracy:.2%}")
-
-                        # Best metric
-                        metrics_dict = {
-                            'Accuracy': accuracy,
-                            'AUC': auc,
-                            'Precision': precision,
-                            'Recall': recall,
-                            'F1': f1
-                        }
-                        best_metric = max(metrics_dict, key=metrics_dict.get)
-                        st.info(f"🏆 Best Metric: {best_metric} ({metrics_dict[best_metric]:.4f})")
+                        st.dataframe(report_df.style.format("{:.4f}"), use_container_width=True)
 
                 # Download predictions
                 st.markdown("---")
@@ -337,40 +378,40 @@ else:
     # Show instructions when no file is uploaded
     st.info("👈 Please upload a CSV file from the sidebar to get started")
 
-    # Show sample data format
-    st.markdown("### 📋 Expected Data Format")
-
+    # Show sample data
     training_data = load_training_info()
     if training_data is not None:
-        st.markdown("""
-        Your CSV file should contain the following features:
-        """)
+        # Expected Data Format Section - Show first
+        with st.expander("📋 View Required Features"):
+            st.markdown("""
+            **Patient Data Required:**
 
-        # Show feature names
-        features = [col for col in training_data.columns if col != 'target']
+            1. **age** - Patient age
+            2. **sex** - Gender (0=Female, 1=Male)
+            3. **cp** - Chest pain type (0-3)
+            4. **trestbps** - Resting blood pressure (mm Hg)
+            5. **chol** - Cholesterol level (mg/dl)
+            6. **fbs** - Fasting blood sugar >120 mg/dl (0=No, 1=Yes)
+            7. **restecg** - Resting ECG results (0-2)
+            8. **thalach** - Maximum heart rate achieved
+            9. **exang** - Exercise induced angina (0=No, 1=Yes)
+            10. **oldpeak** - ST depression value
+            11. **slope** - ST segment slope (0-2)
+            12. **ca** - Number of major vessels (0-3)
+            13. **thal** - Thalassemia type (0-3)
+            14. **target** (optional) - Actual diagnosis (0=No Disease, 1=Disease)
+            """)
 
-        col1, col2 = st.columns(2)
-        mid = len(features) // 2
-
-        with col1:
-            for i, feature in enumerate(features[:mid], 1):
-                st.markdown(f"{i}. **{feature}**")
-
-        with col2:
-            for i, feature in enumerate(features[mid:], mid+1):
-                st.markdown(f"{i}. **{feature}**")
-
-        st.markdown("**Target column (optional):** `target` (0 = No Disease, 1 = Disease)")
-
-        # Show sample data
+        # Show sample data - Show second
         with st.expander("👁️ View Sample Training Data"):
             st.dataframe(training_data.head(20), height=400, use_container_width=True)
 
         # Download sample template
+        st.markdown("### 📥 Download Sample Template")
         sample_template = training_data.drop('target', axis=1).head(5)
         csv = sample_template.to_csv(index=False)
         st.download_button(
-            label="📥 Download Sample Template",
+            label="📥 Download Sample CSV Template",
             data=csv,
             file_name="sample_template.csv",
             mime="text/csv"
@@ -380,6 +421,7 @@ else:
     st.markdown("### 🤖 Available Models")
     st.markdown("""
     Six classification models are available for prediction:
+
     1. **Logistic Regression** - Linear classifier with probabilistic output
     2. **Decision Tree** - Rule-based tree classifier
     3. **K-Nearest Neighbors (kNN)** - Instance-based learning algorithm
@@ -392,7 +434,7 @@ else:
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: gray; padding: 20px;'>
-    <p>ML Assignment 2 - Heart Disease Classification System</p>
-    <p>BITS Pilani - M.Tech (AIML/DSE)</p>
+    <p><strong>ML Assignment 2 - Heart Disease Classification System</strong></p>
+    <p>BITS Pilani - M.Tech (AIML/DSE) | Machine Learning</p>
 </div>
 """, unsafe_allow_html=True)
