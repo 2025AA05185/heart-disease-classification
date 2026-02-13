@@ -119,7 +119,7 @@ The table below shows the performance of all six models across six evaluation me
 ## 🚀 Deployment, Features & Usage
 
 ### Interactive Web Application
-**🌐 Live App:** https://heart-disease-classification-grccj2+kwgxnozf2tqm36cq.streamlit.app
+**🌐 Live App:** https://heart-disease-classification-grccj2kwgxnozf2tqm36cq.streamlit.app
 
 The project includes an interactive Streamlit web application with the following features:
 
