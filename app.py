@@ -117,7 +117,7 @@ def create_styled_classification_report(df):
         border-collapse: collapse;
         margin: 20px 0;
         font-size: 14px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
         border-radius: 10px;
         overflow: hidden;
     }
@@ -133,7 +133,7 @@ def create_styled_classification_report(df):
         letter-spacing: 0.5px;
     }
     .report-table tbody tr {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(102, 126, 234, 0.15);
     }
     .report-table tbody tr:nth-child(1),
     .report-table tbody tr:nth-child(2) {
@@ -150,15 +150,13 @@ def create_styled_classification_report(df):
     .report-table tbody th {
         padding: 12px 15px;
         text-align: left;
-        font-weight: 600;
-        color: #ddd;
+        font-weight: 700;
         background-color: rgba(102, 126, 234, 0.2);
     }
     .report-table tbody td {
         padding: 12px 15px;
         text-align: center;
-        color: #fff;
-        font-weight: 500;
+        font-weight: 600;
     }
     .report-table tbody td.high-value {
         background-color: rgba(102, 126, 234, 0.4);
@@ -337,10 +335,18 @@ def create_confusion_matrix_chart(cm, model_name):
                yticklabels=['No Disease', 'Disease'],
                cbar_kws={'label': 'Count'},
                linewidths=3, linecolor='white',
-               annot_kws={'size': 16, 'weight': 'bold'})
+               annot_kws={'size': 16, 'weight': 'bold'},
+               square=True)
     ax.set_ylabel('True Label', fontsize=12, fontweight='bold')
     ax.set_xlabel('Predicted Label', fontsize=12, fontweight='bold')
     ax.set_title(f'Confusion Matrix - {model_name}', fontsize=14, fontweight='bold', pad=20)
+
+    # Add border around the entire confusion matrix
+    for spine in ax.spines.values():
+        spine.set_visible(True)
+        spine.set_linewidth(2)
+        spine.set_edgecolor('#667eea')
+
     plt.tight_layout()
     return fig
 
@@ -569,11 +575,6 @@ st.set_page_config(
 # ====================================
 st.markdown("""
     <style>
-    /* Animated gradient background for sidebar */
-    [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #1e3a5f 0%, #2d1b4e 100%);
-    }
-
     /* Heartbeat animation */
     @keyframes heartbeat {
         0%, 100% { transform: scale(1); }
@@ -586,15 +587,15 @@ st.markdown("""
         display: inline-block;
     }
 
-    /* Colorful metric cards */
+    /* Colorful metric cards - Theme aware */
     div[data-testid="stMetric"] {
         font-size: 24px;
         font-weight: bold;
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(102, 126, 234, 0.1);
         padding: 20px;
         border-radius: 10px;
         border-left: 5px solid;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
     }
 
     /* Different border colors for each metric card */
@@ -608,12 +609,11 @@ st.markdown("""
         border-left-color: #764ba2;
     }
     div[data-testid="stMetric"] label {
-        color: #ddd;
         font-size: 14px;
         font-weight: 600;
+        opacity: 0.8;
     }
     div[data-testid="stMetric"] [data-testid="stMetricValue"] {
-        color: #ffffff;
         font-size: 32px;
         font-weight: bold;
     }
@@ -666,21 +666,23 @@ st.markdown("""
         box-shadow: 0 5px 15px rgba(250, 112, 154, 0.3);
     }
 
-    /* Sidebar styling */
-    [data-testid="stSidebar"] * {
-        color: white;
+    /* Sidebar styling - Theme aware */
+    [data-testid="stSidebar"] {
+        background: rgba(102, 126, 234, 0.05);
+        border-right: 1px solid rgba(102, 126, 234, 0.2);
     }
 
     [data-testid="stFileUploader"] {
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(102, 126, 234, 0.1);
         border-radius: 10px;
         padding: 15px;
-        border: 2px dashed rgba(255, 255, 255, 0.3);
+        border: 2px dashed rgba(102, 126, 234, 0.3);
     }
 
     .stSelectbox > div > div {
-        background: rgba(255, 255, 255, 0.1);
         border-radius: 8px;
+        border: 1px solid rgba(102, 126, 234, 0.4);
+        background: rgba(102, 126, 234, 0.08);
     }
 
     /* Glowing divider */
@@ -697,7 +699,7 @@ st.markdown("""
         overflow: hidden;
     }
 
-    /* Prediction table styling */
+    /* Prediction table styling - Theme aware */
     .pred-table-wrapper { margin-top: -15px; }
     .pred-table {
         width: 100%;
@@ -716,22 +718,21 @@ st.markdown("""
     .pred-table td {
         padding: 10px;
         text-align: center;
-        color: #333;
         font-size: 14px;
-        border: 1px solid #e0e0e0;
+        border: 1px solid rgba(102, 126, 234, 0.2);
     }
     .pred-table tbody tr:nth-child(1) td:first-child { text-align: left; }
     .pred-table tbody tr:nth-child(2) td:first-child { text-align: left; }
-    .pred-table tbody tr:nth-child(1) { background-color: #e8f5e9; }
-    .pred-table tbody tr:nth-child(2) { background-color: #ffebee; }
+    .pred-table tbody tr:nth-child(1) { background-color: rgba(67, 233, 123, 0.15); }
+    .pred-table tbody tr:nth-child(2) { background-color: rgba(255, 107, 107, 0.15); }
 
-    /* Metric cards styling */
+    /* Metric cards styling - Theme aware */
     .metric-card {
-        background: white;
+        background: rgba(102, 126, 234, 0.05);
         border-radius: 15px;
         padding: 25px 20px;
         margin: 15px 0;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
         transition: all 0.3s ease;
         border-left: 6px solid;
         min-height: 180px;
@@ -741,13 +742,13 @@ st.markdown("""
     }
     .metric-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.25);
     }
     .metric-header {
         font-size: 17px;
         font-weight: 600;
         margin-bottom: 12px;
-        color: #333;
+        opacity: 0.9;
     }
     .metric-value {
         font-size: 36px;
@@ -757,13 +758,13 @@ st.markdown("""
     }
     .metric-percentage {
         font-size: 20px;
-        color: #666;
+        opacity: 0.7;
         margin-left: 8px;
         font-weight: 600;
     }
     .metric-description {
         font-size: 13px;
-        color: #777;
+        opacity: 0.7;
         margin-top: 12px;
         line-height: 1.4;
     }
@@ -779,7 +780,7 @@ st.markdown("""
     .progress-bar {
         width: 100%;
         height: 10px;
-        background: #e0e0e0;
+        background: rgba(102, 126, 234, 0.2);
         border-radius: 5px;
         margin-top: 12px;
         overflow: hidden;
@@ -790,33 +791,45 @@ st.markdown("""
         transition: width 1s ease;
     }
 
-    /* Confusion Matrix breakdown cards */
+    /* Confusion Matrix breakdown cards - Theme aware */
     .cm-card {
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(102, 126, 234, 0.1);
         border-radius: 10px;
         padding: 15px;
         margin: 8px;
         border-left: 5px solid;
+        border: 2px solid rgba(102, 126, 234, 0.3);
         height: 100%;
     }
-    .cm-card-tn { border-left-color: #43e97b; }
-    .cm-card-fp { border-left-color: #ffa726; }
-    .cm-card-fn { border-left-color: #ff6b6b; }
-    .cm-card-tp { border-left-color: #667eea; }
+    .cm-card-tn {
+        border-left-color: #43e97b;
+        border-left-width: 5px;
+    }
+    .cm-card-fp {
+        border-left-color: #ffa726;
+        border-left-width: 5px;
+    }
+    .cm-card-fn {
+        border-left-color: #ff6b6b;
+        border-left-width: 5px;
+    }
+    .cm-card-tp {
+        border-left-color: #667eea;
+        border-left-width: 5px;
+    }
     .cm-label {
         font-size: 13px;
         font-weight: 600;
-        color: #ddd;
+        opacity: 0.8;
         margin-bottom: 8px;
     }
     .cm-value {
         font-size: 32px;
         font-weight: bold;
-        color: #fff;
     }
     .cm-desc {
         font-size: 11px;
-        color: #aaa;
+        opacity: 0.6;
         margin-top: 8px;
     }
     </style>
@@ -860,10 +873,10 @@ selected_model_name = st.sidebar.selectbox(
 # Sidebar Footer
 st.sidebar.markdown("<br>" * 3, unsafe_allow_html=True)
 st.sidebar.markdown("""
-<div style='position: fixed; bottom: 20px; left: 20px; width: 300px; font-size: 15px; color: #b0b0b0; line-height: 1.6;'>
-    <p style='margin: 0; font-weight: bold; color: #e0e0e0;'>Student:</p>
-    <p style='margin: 0;'>Deepti Yashwant Walde</p>
-    <p style='margin: 0;'>ID: 2025AA05185</p>
+<div style='position: fixed; bottom: 20px; left: 20px; width: 300px; font-size: 14px; line-height: 1.6; opacity: 0.8;'>
+    <p style='margin: 0 0 2px 0; font-weight: bold; font-size: 15px;'>Student:</p>
+    <p style='margin: 0 0 2px 0; font-weight: 600;'><span style='opacity: 0.7;'>Name:</span> Deepti Yashwant Walde</p>
+    <p style='margin: 0; font-weight: 600;'><span style='opacity: 0.7;'>ID:</span> 2025AA05185</p>
 </div>
 """, unsafe_allow_html=True)
 
